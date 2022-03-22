@@ -1,0 +1,59 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+.container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.left {
+  width: 20rem;
+}
+
+.button {
+  width: 15rem;
+  height: 2rem;
+  cursor: pointer;
+  background-color: black;
+  color: whiteSmoke;
+  border: black;
+  font-family: "Roboto";
+}
+
+.input {
+  width: 15rem;
+  height: 2rem;
+  outline: none;
+  border-radius: 5px;
+  border: 1px solid gray;
+  margin: 5px 0;
+}
+
+.saveBtn {
+  width: 15rem;
+  height: 2rem;
+  cursor: pointer;
+  background-color: #771b1b;
+  color: whiteSmoke;
+  border: #771b1b;
+  font-family: "Roboto";
+}
+
+.ReactQuill {
+  width: 15rem;
+}
+
+.notesInner {
+  margin-top: 0.5rem;
+  border: 1px solid #771b1b;
+  border-radius: 10px;
+  width: 15rem;
+  text-align: center;
+  cursor: pointer;
+  font-family: "Roboto";
+}
+
+.notesInner:hover {
+  background-color: #771b1b;
+  color: whiteSmoke;
+}
+/*# sourceMappingURL=evernote.module.css.map */
