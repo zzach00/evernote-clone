@@ -5,7 +5,7 @@ import { collection, addDoc, getDocs } from 'firebase/firestore';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
-export default function NoteOperations() {
+export default function NoteOperations({getSingleNote}) {
     useEffect(()=>{
         getNotes();
     }, []);
@@ -42,6 +42,7 @@ export default function NoteOperations() {
             }));
         })
     }
+
     return (
         <>
             <div className={styles.btnContainer}>
@@ -83,9 +84,10 @@ export default function NoteOperations() {
             <div>
                 {notesArray.map((note) =>{
                     return(
-                        <div className={styles.notesInner}>
+                        <div 
+                        className={styles.notesInner}
+                        onClick = {() => getSingleNote(note.id)}>
                             <h1>{note.noteTitle}</h1>
-                            <div dangerouslySetInnerHTML={{__html: note.noteDesc}}></div>
                         </div>
                     )
                 })}
