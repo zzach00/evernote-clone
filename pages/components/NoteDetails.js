@@ -1,26 +1,34 @@
+import styles from '../../styles/evernote.module.css'
 import { useEffect, useState } from 'react'
 import { app, database } from '../../firebaseConfig';
-import { collection, doc, getDoc, getDocs } from 'firebase/firestore'
+import {
+    doc,
+    getDoc,
+    getDocs,
+    collection,
+    updateDoc,
+    deleteDoc
+} from 'firebase/firestore'
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { async } from '@firebase/util';
+const dbInstance = collection(database, 'notes');
 
-export default function NoteDetails ({IDe}) {
-
-    const dbInstance = collection(database, 'notes');
+export default function NoteDetails({ ID }) {
 
     const [singleNote, setSingleNote] = useState({})
-    const getSingleNote = async () => {
-        if (IDe) {
-            const singleNotee = doc(database, 'notes', IDe);
-            const data = await getDoc(singleNotee);
-            setSingleNote({...data.data(), id: data.id});
-        }
-    }
+    const [isEdit, setIsEdit] = useState(false);
+    const [noteTitle, setNoteTitle] = useState('');
+    const [noteDesc, setNoteDesc] = useState('');
 
-    useEffect(() => {
-        getSingleNote();
-    }, [IDe])
+    const getSingleNote = async () => {
+        if (ID) {
+            const singleNote = doc(database, 'notes', ID)
+            const data = await getDoc(singleNote)
+            console.log({ ...data.data(), id: data.id })
+            setSingleNote({ ...data.data(), id: data.id })
+        } 
+    }
 
     const getNotes = () => {
         getDocs(dbInstance)
@@ -31,13 +39,79 @@ export default function NoteDetails ({IDe}) {
             })
     }
 
+    const getEditData = () => {
+        setIsEdit(true);
+        setNoteTitle(singleNote.noteTitle);
+        setNoteDesc(singleNote.noteDesc)
+    }
+
     useEffect(() => {
         getNotes();
     }, [])
 
+    useEffect(() => {
+        getSingleNote();
+    }, [ID])
 
-    return(
+    const editNote = (id) => {
+        const collectionById = doc(database, 'notes', id)
+
+        updateDoc(collectionById, {
+            noteTitle: noteTitle,
+            noteDesc: noteDesc,
+        })
+            .then(() => {
+                window.location.reload()
+            })
+    }
+
+    const deleteNote = (id) => {
+        const collectionById = doc(database, 'notes', id)
+
+        deleteDoc(collectionById)
+            .then(() => {
+                window.location.reload()
+            })
+    }
+    return (
         <>
+            <div>
+                <button
+                    className={styles.editBtn}
+                    onClick={getEditData}
+                >Edit
+                </button>
+                <button
+                    className={styles.deleteBtn}
+                    onClick={() => deleteNote(singleNote.id)}
+                >Delete
+                </button>
+            </div>
+            
+            {isEdit ? (
+                <div className={styles.inputContainer}>
+                    <input
+                        className={styles.input}
+                        placeholder='Enter the Title..'
+                        onChange={(e) => setNoteTitle(e.target.value)}
+                        value={noteTitle}
+                    />
+                    <div className={styles.ReactQuill}>
+                        <ReactQuill
+                            onChange={setNoteDesc}
+                            value={noteDesc}
+                        />
+                    </div>
+                    <button
+                        onClick={() => editNote(singleNote.id)}
+                        className={styles.saveBtn}>
+                        Update Note
+                    </button>
+                </div>
+            ) : (
+                <></>
+            )}
+
             <h2>{singleNote.noteTitle}</h2>
             <div dangerouslySetInnerHTML={{ __html: singleNote.noteDesc }}></div>
         </>

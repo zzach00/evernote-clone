@@ -4,6 +4,7 @@ import styles from '../styles/evernote.module.css'
 import dynamic from 'next/dynamic'
 import { useState } from 'react'
 
+
 const NoteOperations = dynamic(() => import('./components/NoteOperations'), {ssr: false})
 const NoteDetails = dynamic(() => import('./components/NoteDetails'), {ssr: false})
 
@@ -14,6 +15,7 @@ export default function Home() {
   const getANote = (id) => {
     setID(id)
   }
+
 
   return (
     <div className={styles.container}>
@@ -28,8 +30,9 @@ export default function Home() {
           <div className={styles.left}>
             <NoteOperations getSingleNote={getANote}/>
           </div>
+
           <div className={styles.right}>
-            <NoteDetails IDe = {ID} />
+            <NoteDetails ID = {ID} />
           </div>
         </div>
       </main>

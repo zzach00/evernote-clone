@@ -82,12 +82,12 @@ export default function NoteOperations({getSingleNote}) {
             </button>
 
             <div>
-                {notesArray.map((note) =>{
-                    return(
-                        <div 
-                        className={styles.notesInner}
-                        onClick = {() => getSingleNote(note.id)}>
-                            <h1>{note.noteTitle}</h1>
+                {notesArray.map((note) => {
+                    return (
+                        <div
+                            className={styles.notesInner}
+                            onClick={() => getSingleNote(note.id)}>
+                            <h4>{note.noteTitle}</h4>
                         </div>
                     )
                 })}
